@@ -68,4 +68,51 @@ router.post('/login', async (req, res) => {
     }
 });
 
+// @route   POST api/auth/google
+// @desc    Google Login/Register
+// @access  Public
+router.post('/google', async (req, res) => {
+    const { name, email, googleId } = req.body;
+
+    try {
+        let user = await User.findOne({ email });
+
+        if (user) {
+            // User exists, log them in
+            return res.json({
+                token: 'mock-jwt-token-' + user.id,
+                user: {
+                    id: user.id,
+                    name: user.name,
+                    email: user.email,
+                    hasCompletedAssessment: user.hasCompletedAssessment
+                }
+            });
+        }
+
+        // User doesn't exist, create new
+        user = new User({
+            name,
+            email,
+            password: 'google-auth-user-' + googleId, // Dummy password for schema validation
+            isGoogleAuth: true
+        });
+
+        await user.save();
+
+        res.json({
+            token: 'mock-jwt-token-' + user.id,
+            user: {
+                id: user.id,
+                name: user.name,
+                email: user.email,
+                hasCompletedAssessment: user.hasCompletedAssessment
+            }
+        });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+});
+
 module.exports = router;

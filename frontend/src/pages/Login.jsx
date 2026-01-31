@@ -2,21 +2,38 @@ import React, { useState } from 'react';
 import { Mail, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { auth, googleProvider } from '../firebase';
+import { signInWithPopup } from 'firebase/auth';
 
 const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const { login } = useAuth();
+    const { login, googleLogin } = useAuth();
     const navigate = useNavigate();
+
+    const handleGoogleSignIn = async () => {
+        try {
+            const result = await signInWithPopup(auth, googleProvider);
+            const res = await googleLogin(result);
+            if (res.success) {
+                navigate('/');
+            } else {
+                setError(res.error);
+            }
+        } catch (error) {
+            console.error(error);
+            setError(error.message || "Google Sign In Failed");
+        }
+    };
 
     const handleLogin = async (e) => {
         e.preventDefault();
         setError('');
         const res = await login(email, password);
         if (res.success) {
-            navigate('/'); // Router will handle direction based on assessment status
+            navigate('/');
         } else {
             setError(res.error);
         }
@@ -106,7 +123,11 @@ const Login = () => {
                         </div>
                     </div>
 
-                    <button className="mt-6 w-full bg-white border border-gray-200 text-gray-700 font-medium py-2.5 rounded-xl hover:bg-gray-50 transition-colors flex items-center justify-center gap-2">
+                    <button
+                        type="button"
+                        onClick={handleGoogleSignIn}
+                        className="mt-6 w-full bg-white border border-gray-200 text-gray-700 font-medium py-2.5 rounded-xl hover:bg-gray-50 transition-colors flex items-center justify-center gap-2"
+                    >
                         <svg className="w-5 h-5" viewBox="0 0 24 24">
                             <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
                             <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
