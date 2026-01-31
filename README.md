@@ -2,14 +2,23 @@
 
 Skill Path AI is an AI-powered EdTech and Career Guidance platform that helps users discover their ideal career path through personalized skill assessments, course recommendations, and job matching.
 
+## Features
+
+- **Personalized Assessments**: AI-driven skill assessments to gauge your current level.
+- **Career Path Discovery**: Tailored recommendations for career improvements.
+- **Google Authentication**: Secure and easy sign-in using Google (powered by Firebase).
+- **Interactive Dashboard**: Track your applications and progress.
+- **Job Matching**: Find jobs that match your skill set.
+
 ## Prerequisites
 
 - **Node.js** (v14 or higher)
 - **MongoDB** (Local instance or Atlas URI)
+- **Firebase Project** (for Google Auth)
 
 ## Project Structure
 
-- **frontend/**: React application (Vite + Tailwind CSS)
+- **frontend/**: React application (Vite + Tailwind CSS + Firebase)
 - **backend/**: Node.js + Express + MongoDB API
 
 ## Setup Instructions
@@ -44,16 +53,19 @@ cd frontend
 npm install
 ```
 
+**Firebase Configuration:**
+Ensure your `src/firebase.js` is correctly set up with your project's API keys if you are setting this up from scratch.
+
 **Run the Application:**
 ```bash
 npm run dev
-# App will usually start on http://localhost:5173 (or next available port)
+# App will usually start on http://localhost:5173
 ```
 
 ## How to Use
 
 1.  **Landing Page**: Open the frontend URL.
-2.  **Sign Up**: Create a new account.
+2.  **Sign Up/Login**: use your Google account or email to sign in.
 3.  **Assessment**: Complete the skill assessment wizard.
-4.  **Dashboard**: access your personalized dashboard.
-5.  **Profile**: View and edit your profile details (saved to DB).
+4.  **Dashboard**: Access your personalized dashboard.
+5.  **Profile**: View and edit your profile details.
