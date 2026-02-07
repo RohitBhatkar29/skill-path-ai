@@ -1,71 +1,90 @@
 # Skill Path AI
 
-Skill Path AI is an AI-powered EdTech and Career Guidance platform that helps users discover their ideal career path through personalized skill assessments, course recommendations, and job matching.
+Skill Path AI is an AI-powered EdTech platform that provides personalized career guidance, skill assessments, and resume analysis.
 
 ## Features
 
-- **Personalized Assessments**: AI-driven skill assessments to gauge your current level.
-- **Career Path Discovery**: Tailored recommendations for career improvements.
-- **Google Authentication**: Secure and easy sign-in using Google (powered by Firebase).
-- **Interactive Dashboard**: Track your applications and progress.
-- **Job Matching**: Find jobs that match your skill set.
+*   **Skill Assessment:** Multi-step wizard to evaluate user skills.
+*   **AI Recommendations:** Personalized course and job recommendations.
+*   **Resume Analyzer:**
+    *   **Analysis:** AI-powered extraction of skills and job roles from PDF/DOCX resumes.
+    *   **Job Matching:** Match your resume against a job description to get an ATS score.
+    *   **Resume Builder:** Create and download professional PDF resumes.
+*   **Dashboard:** Visual analytics of your progress.
 
 ## Prerequisites
 
-- **Node.js** (v14 or higher)
-- **MongoDB** (Local instance or Atlas URI)
-- **Firebase Project** (for Google Auth)
+*   [Node.js](https://nodejs.org/) (v14+)
+*   [Python](https://www.python.org/) (v3.9+)
+*   [MongoDB](https://www.mongodb.com/try/download/community) (running locally or Atlas URI)
 
-## Project Structure
+## 🚀 How to Run the Project
 
-- **frontend/**: React application (Vite + Tailwind CSS + Firebase)
-- **backend/**: Node.js + Express + MongoDB API
+You need to run three separate terminals for the full application.
 
-## Setup Instructions
+### 1. Start the Node.js Backend (Port 5000)
 
-### 1. Database Setup
-Make sure you have MongoDB running locally.
-The backend is configured to connect to: `mongodb://localhost:27017/skillpath` (or your specific URI in `.env`).
+Handles API requests, authentication, and acts as a proxy to the Python service.
 
-### 2. Backend Setup
-```bash
-cd backend
-npm install
-```
+1.  Open a terminal.
+2.  Navigate to the `backend` folder:
+    ```bash
+    cd backend
+    ```
+3.  Install dependencies (first time only):
+    ```bash
+    npm install
+    ```
+4.  Start the server:
+    ```bash
+    npm run dev
+    ```
+    *   *You should see: `Server running on port 5000` & `MongoDB Connected successfully`*
 
-Create a `.env` file in the `backend` folder if it doesn't exist:
-```env
-PORT=5000
-MONGO_URI=mongodb://localhost:27017/skillpath
-JWT_SECRET=your_secret_key_here
-```
+### 2. Start the Python AI Microservice (Port 8000)
 
-**Run the Server:**
-```bash
-npm run dev
-# Server will start on http://localhost:5000
-```
+Handles resume parsing, ML predictions, and text processing.
 
-### 3. Frontend Setup
-Open a new terminal:
-```bash
-cd frontend
-npm install
-```
+1.  Open a **new** terminal.
+2.  Navigate to the `skillpath-backend` folder:
+    ```bash
+    cd skillpath-backend
+    ```
+3.  Install Python dependencies (first time only):
+    ```bash
+    pip install -r requirements.txt
+    ```
+    *   *Note: Ensure you have `scikit-learn`, `fastapi`, `uvicorn`, `pypdf2`, `python-multipart` installed.*
+4.  Start the FastAPI server:
+    ```bash
+    python -m uvicorn app:app --port 8000 --reload
+    ```
+    *   *You should see: `Uvicorn running on http://127.0.0.1:8000`*
 
-**Firebase Configuration:**
-Ensure your `src/firebase.js` is correctly set up with your project's API keys if you are setting this up from scratch.
+### 3. Start the Frontend (Port 5173)
 
-**Run the Application:**
-```bash
-npm run dev
-# App will usually start on http://localhost:5173
-```
+The React user interface.
 
-## How to Use
+1.  Open a **third** terminal.
+2.  Navigate to the `frontend` folder:
+    ```bash
+    cd frontend
+    ```
+3.  Install dependencies (first time only):
+    ```bash
+    npm install
+    ```
+4.  Start the Vite development server:
+    ```bash
+    npm run dev
+    ```
+5.  Open your browser and go to: **[http://localhost:5173](http://localhost:5173)**
 
-1.  **Landing Page**: Open the frontend URL.
-2.  **Sign Up/Login**: use your Google account or email to sign in.
-3.  **Assessment**: Complete the skill assessment wizard.
-4.  **Dashboard**: Access your personalized dashboard.
-5.  **Profile**: View and edit your profile details.
+---
+
+## Resume Analyzer Usage
+
+1.  Navigate to the **Resume** page.
+2.  **Upload**: Drag & drop your resume (PDF/DOCX) to see extracted skills and predicted roles.
+3.  **Job Match**: Paste a Job Description on the right sidebar and click "Calculate Match Score" to see your ATS score and missing skills.
+4.  **Create**: Use the "Create Resume" tab to build a resume from scratch and download it as a PDF.
